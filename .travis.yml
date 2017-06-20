@@ -7,7 +7,7 @@ compiler:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y libsimgear-dev cmake
+  - sudo apt-get install -y libsimgear-dev libboost1.55-dev cmake
 
 script:
   - mkdir build
