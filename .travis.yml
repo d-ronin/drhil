@@ -1,6 +1,6 @@
 # Travis CI
 sudo: required
-dist: xenial
+dist: trusty
 language: generic
 compiler:
   - gcc
