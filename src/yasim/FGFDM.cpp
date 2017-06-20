@@ -2,8 +2,8 @@
 #  include "config.h"
 #endif
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
 
 #include "fg_props.hxx"
 

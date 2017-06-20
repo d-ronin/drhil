@@ -19,7 +19,8 @@
 #ifdef TEST_DEBUG
 #include <stdio.h>
 #endif
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <sstream>
 

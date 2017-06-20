@@ -1,5 +1,5 @@
-#include <stdio.h>
-
+#include <string>
+#include <cstdio>
 #include <cstring>
 #include <cstdlib>
 
@@ -71,7 +71,7 @@ int main(int argc, char** argv)
 
     // Read
     try {
-        string file = argv[1];
+	std::string file = argv[1];
         readXML(file, *fdm);
     } catch (const sg_exception &e) {
         printf("XML parse error: %s (%s)\n",

@@ -3,7 +3,8 @@
 #  include "config.h"
 #endif
 
-#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 
 #include <simgear/debug/logstream.hxx>
 #include <simgear/math/sg_geodesy.hxx>
