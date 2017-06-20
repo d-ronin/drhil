@@ -38,8 +38,9 @@ set(SOURCES
 	FGGround.cpp
 	)
 
-add_executable(yasim yasim-test.cpp ${COMMON})
-add_executable(yasim-proptest proptest.cpp ${COMMON})
+add_library(yasim ${COMMON})
+add_executable(yasim-test yasim-test.cpp)
+add_executable(yasim-proptest proptest.cpp)
 
 set(SIMGEAR_CORE_LIBRARIES
 	-lSimGearCore
@@ -51,13 +52,17 @@ set(SIMGEAR_CORE_LIBRARY_DEPENDENCIES
 	-lz
 	)
 
-target_link_libraries(yasim
+target_link_libraries(yasim-test
+		yasim
 		${SIMGEAR_CORE_LIBRARIES}
-		${SIMGEAR_CORE_LIBRARY_DEPENDENCIES})
+		${SIMGEAR_CORE_LIBRARY_DEPENDENCIES}
+		)
 
 target_link_libraries(yasim-proptest
+		yasim
 		${SIMGEAR_CORE_LIBRARIES}
-		${SIMGEAR_CORE_LIBRARY_DEPENDENCIES})
+		${SIMGEAR_CORE_LIBRARY_DEPENDENCIES}
+		)
 
-install(TARGETS yasim yasim-proptest RUNTIME DESTINATION bin)
+#install(TARGETS yasim yasim-proptest RUNTIME DESTINATION bin)
 
