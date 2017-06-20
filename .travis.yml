@@ -1,0 +1,17 @@
+# Travis CI
+sudo: required
+dist: xenial
+language: generic
+compiler:
+  - gcc
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libsimgear-dev cmake
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ../src
+  - make -j2
+  # Run tests XXX
