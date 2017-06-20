@@ -1,4 +1,6 @@
-include(FlightGearComponent)
+cmake_minimum_required (VERSION 3.5.0)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
 set(COMMON
 	Airplane.cpp
@@ -26,19 +28,28 @@ set(COMMON
 	TurbineEngine.cpp
 	Turbulence.cpp
 	Wing.cpp
+	fg_props.cpp
 	)
 
 set(SOURCES
 	${COMMON}
 	YASim.cxx
+	fg_props.cxx
 	FGGround.cpp
 	)
 
-flightgear_component(YASim  "${SOURCES}")
-
-if(ENABLE_TESTS)
 add_executable(yasim yasim-test.cpp ${COMMON})
 add_executable(yasim-proptest proptest.cpp ${COMMON})
+
+set(SIMGEAR_CORE_LIBRARIES
+	-lSimGearCore
+	)
+
+set(SIMGEAR_CORE_LIBRARY_DEPENDENCIES
+	Threads::Threads
+	-lexpat
+	-lz
+	)
 
 target_link_libraries(yasim
 		${SIMGEAR_CORE_LIBRARIES}
@@ -49,6 +60,4 @@ target_link_libraries(yasim-proptest
 		${SIMGEAR_CORE_LIBRARY_DEPENDENCIES})
 
 install(TARGETS yasim yasim-proptest RUNTIME DESTINATION bin)
-
-endif(ENABLE_TESTS)
 

@@ -6,7 +6,7 @@
 #include <simgear/debug/logstream.hxx>
 
 #include "Math.hpp"
-#include <Main/fg_props.hxx>
+#include "fg_props.hxx"
 #include "Surface.hpp"
 #include "Rotorpart.hpp"
 #include "Glue.hpp"

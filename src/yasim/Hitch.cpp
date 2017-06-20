@@ -2,6 +2,7 @@
 #  include "config.h"
 #endif
 
+#include "fg_props.hxx"
 #include "Math.hpp"
 #include "BodyEnvironment.hpp"
 #include "RigidBody.hpp"
