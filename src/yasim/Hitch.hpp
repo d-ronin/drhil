@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include <Main/fg_props.hxx>
 #include <simgear/props/tiedpropertylist.hxx>
 
 namespace yasim {

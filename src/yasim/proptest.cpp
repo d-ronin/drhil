@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <simgear/misc/sg_path.hxx>
+
+#include "fg_props.hxx"
 #include "Math.hpp"
 #include "FGFDM.hpp"
 #include "PropEngine.hpp"
@@ -14,18 +17,6 @@
 using namespace yasim;
 
 // Usage: proptest plane.xml [alt-ft] [spd-ktas]
-
-// Stubs.  Not needed by a batch program, but required to link.
-class SGPropertyNode;
-bool fgSetFloat (const char * name, float val) { return false; }
-bool fgSetBool(char const * name, bool val) { return false; }
-bool fgGetBool(char const * name, bool def) { return false; }
-bool fgSetString(char const * name, char const * str) { return false; }
-SGPropertyNode* fgGetNode (const char * path, bool create) { return 0; }
-SGPropertyNode* fgGetNode (const char * path, int i, bool create) { return 0; }
-float fgGetFloat (const char * name, float defaultValue) { return 0; }
-double fgGetDouble (const char * name, double defaultValue) { return 0; }
-bool fgSetDouble (const char * name, double defaultValue) { return false; }
 
 static const float KTS2MPS = 0.514444444444;
 static const float RPM2RAD = 0.10471975512;
@@ -52,7 +43,8 @@ int main(int argc, char** argv)
 
     // Read
     try {
-        readXML(argv[1], fdm);
+        string file = argv[1];
+        readXML(file, fdm);
     } catch (const sg_exception &e) {
         printf("XML parse error: %s (%s)\n",
                e.getFormattedMessage().c_str(), e.getOrigin());

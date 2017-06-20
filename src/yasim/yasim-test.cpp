@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <simgear/misc/sg_path.hxx>
 #include <simgear/props/props.hxx>
 #include <simgear/xml/easyxml.hxx>
 
@@ -11,17 +12,6 @@
 #include "Airplane.hpp"
 
 using namespace yasim;
-
-// Stubs.  Not needed by a batch program, but required to link.
-bool fgSetFloat (const char * name, float val) { return false; }
-bool fgSetBool(char const * name, bool val) { return false; }
-bool fgGetBool(char const * name, bool def) { return false; }
-bool fgSetString(char const * name, char const * str) { return false; }
-SGPropertyNode* fgGetNode (const char * path, bool create) { return 0; }
-SGPropertyNode* fgGetNode (const char * path, int i, bool create) { return 0; }
-float fgGetFloat (const char * name, float defaultValue) { return 0; }
-double fgGetDouble (const char * name, double defaultValue = 0.0) { return 0; }
-bool fgSetDouble (const char * name, double defaultValue = 0.0) { return 0; }
 
 static const float RAD2DEG = 57.2957795131;
 static const float DEG2RAD = 0.0174532925199;

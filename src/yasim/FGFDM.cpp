@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <Main/fg_props.hxx>
+#include "fg_props.hxx"
 
 #include "Math.hpp"
 #include "Jet.hpp"

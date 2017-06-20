@@ -9,7 +9,7 @@
 
 #include <cfloat>
 #include <simgear/bvh/BVHMaterial.hxx>
-#include <FDM/flight.hxx>
+//#include <FDM/flight.hxx>
 #include "Gear.hpp"
 namespace yasim {
 static const float YASIM_PI = 3.14159265358979323846;
