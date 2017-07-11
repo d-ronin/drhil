@@ -102,7 +102,7 @@ void Airplane::iterate(float dt)
     // The gear might have moved.  Change their aerodynamics.
     updateGearState();
 
-    _model.iterate();
+    _model.iterate(dt);
 }
 
 void Airplane::calcFuelWeights()
@@ -839,7 +839,7 @@ void Airplane::runCruise()
     // Precompute thrust in the model, and calculate aerodynamic forces
     _model.getBody()->recalc();
     _model.getBody()->reset();
-    _model.initIteration();
+    _model.initIteration(1.0/30);
     _model.calcForces(&_cruiseState);
 }
 
@@ -883,7 +883,7 @@ void Airplane::runApproach()
     // Precompute thrust in the model, and calculate aerodynamic forces
     _model.getBody()->recalc();
     _model.getBody()->reset();
-    _model.initIteration();
+    _model.initIteration(1.0/30);
     _model.calcForces(&_approachState);
 }
 

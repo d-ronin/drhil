@@ -38,7 +38,7 @@ public:
 
     // Do a 4th order Runge-Kutta integration over one time interval.
     // This is the top level of the simulation.
-    void calcNewInterval();
+    void calcNewInterval(float user_dt);
 
 private:
     void orthonormalize(float* m);
@@ -49,7 +49,6 @@ private:
 
     BodyEnvironment* _env;
     RigidBody* _body;
-    float _dt;
 
     State _s;
 };
