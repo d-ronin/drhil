@@ -12,16 +12,6 @@ void Integrator::setEnvironment(BodyEnvironment* env)
     _env = env;
 }
 
-void Integrator::setInterval(float dt)
-{
-    _dt = dt;
-}
-
-float Integrator::getInterval()
-{
-    return _dt;
-}
-
 void Integrator::setState(State* s)
 {
     _s = *s;
@@ -67,12 +57,12 @@ void Integrator::extrapolatePosition(double* pos, float* v, float dt,
 
 #if 0
 // A straight euler integration, for reference.  Don't use.
-void Integrator::calcNewInterval()
+void Integrator::calcNewInterval(float user_dt)
 {
     float tmp[3];
     State s = _s;
 
-    float dt = _dt / 4;
+    float dt = user_dt / 4;
 
     orthonormalize(_s.orient);
     int i;
@@ -105,13 +95,13 @@ void Integrator::calcNewInterval()
 }
 #endif
 
-void Integrator::calcNewInterval()
+void Integrator::calcNewInterval(float user_dt)
 {
     // In principle, these could be changed for something other than
     // a 4th order integration.  I doubt if anyone cares.
-    const static int NITER=4;
-    static float TIMESTEP[] = { 1.0, 0.5, 0.5, 1.0 };
-    static float WEIGHTS[]  = { 6.0, 3.0, 3.0, 6.0 };
+    const int NITER=4;
+    const float TIMESTEP[] = { 1.0, 0.5, 0.5, 1.0 };
+    const float WEIGHTS[]  = { 6.0, 3.0, 3.0, 6.0 };
 
     // Scratch pads:
     double pos[NITER][3]; float vel[NITER][3]; float acc[NITER][3];
@@ -132,7 +122,7 @@ void Integrator::calcNewInterval()
 	// derivatives and the ORIGINAL values of the
 	// position/orientation.
 	//
-	float dt = _dt * TIMESTEP[i];
+	float dt = user_dt * TIMESTEP[i];
 	float tmp[3];
 
 	// "add" rotation to orientation (generate a rotation matrix)
@@ -218,16 +208,16 @@ void Integrator::calcNewInterval()
     for(i=0; i<9; i++) orient0[i] = _s.orient[i];
 
     float rotmat[9];
-    rotMatrix(derivs.rot, _dt, rotmat);
+    rotMatrix(derivs.rot, user_dt, rotmat);
     Math::mmul33(orient0, rotmat, _s.orient);
 
-    extrapolatePosition(_s.pos, derivs.v, _dt, orient0, _s.orient);
+    extrapolatePosition(_s.pos, derivs.v, user_dt, orient0, _s.orient);
 
     float tmp[3];
-    Math::mul3(_dt, derivs.acc, tmp);
+    Math::mul3(user_dt, derivs.acc, tmp);
     Math::add3(_s.v, tmp, _s.v);
 
-    Math::mul3(_dt, derivs.racc, tmp);
+    Math::mul3(user_dt, derivs.racc, tmp);
     Math::add3(_s.rot, tmp, _s.rot);
     
     for(i=0; i<3; i++) {

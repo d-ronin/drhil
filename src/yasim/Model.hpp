@@ -38,7 +38,7 @@ public:
     void setCrashed(bool crashed);
     float getAGL();
 
-    void iterate();
+    void iterate(float dt);
 
     // Externally-managed subcomponents
     int addThruster(Thruster* t);
@@ -57,7 +57,7 @@ public:
     int numThrusters();
     Thruster* getThruster(int handle);
     void setThruster(int handle, Thruster* t);
-    void initIteration();
+    void initIteration(float dt);
     void getThrust(float* out);
 
     void setGroundCallback(Ground* ground_cb);
@@ -77,7 +77,7 @@ public:
     virtual void newState(State* s);
 
 private:
-    void initRotorIteration();
+    void initRotorIteration(float dt);
     void calcGearForce(Gear* g, float* v, float* rot, float* ground);
     float gearFriction(float wgt, float v, Gear* g);
     void localWind(float* pos, State* s, float* out, float alt,

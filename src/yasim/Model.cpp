@@ -56,9 +56,6 @@ Model::Model()
     _integrator.setBody(&_body);
     _integrator.setEnvironment(this);
 
-    // Default value of 30 Hz
-    _integrator.setInterval(1.0f/30.0f);
-
     _agl = 0;
     _crashed = false;
     _turb = 0;
@@ -98,7 +95,7 @@ void Model::getThrust(float* out)
     }
 }
 
-void Model::initIteration()
+void Model::initIteration(float dt)
 {
     // Precompute torque and angular momentum for the thrusters
     int i;
@@ -120,7 +117,7 @@ void Model::initIteration()
 
 	t->setWind(v);
 	t->setAir(_pressure, _temp, _rho);
-	t->integrate(_integrator.getInterval());
+	t->integrate(dt);
 
 	t->getTorque(v);
 	Math::add3(v, _torque, _torque);
@@ -132,13 +129,13 @@ void Model::initIteration()
     // Displace the turbulence coordinates according to the local wind.
     if(_turb) {
         float toff[3];
-        Math::mul3(_integrator.getInterval(), _wind, toff);
+        Math::mul3(dt, _wind, toff);
         _turb->offset(toff);
     }
 
     for(i=0; i<_hitches.size(); i++) {
         Hitch* h = (Hitch*)_hitches.get(i);
-        h->integrate(_integrator.getInterval());
+        h->integrate(dt);
     }
 
     
@@ -152,9 +149,8 @@ void Model::initIteration()
 // Therefore its rotation must be subtracted from the orientation of the 
 // rotor.
 // Maik
-void Model::initRotorIteration()
+void Model::initRotorIteration(float dt)
 {
-    float dt = _integrator.getInterval();
     float lrot[3];
     if (!_rotorgear.isInUse()) return;
     Math::vmul33(_s->orient, _s->rot, lrot);
@@ -162,12 +158,12 @@ void Model::initRotorIteration()
     _rotorgear.initRotorIteration(lrot,dt);
 }
 
-void Model::iterate()
+void Model::iterate(float dt)
 {
-    initIteration();
-    initRotorIteration();
+    initIteration(dt);
+    initRotorIteration(dt);
     _body.recalc(); // FIXME: amortize this, somehow
-    _integrator.calcNewInterval();
+    _integrator.calcNewInterval(dt);
 }
 
 bool Model::isCrashed()
