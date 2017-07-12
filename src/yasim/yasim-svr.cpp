@@ -9,6 +9,8 @@
 #include <simgear/math/sg_geodesy.hxx>
 #include <simgear/misc/sg_path.hxx>
 
+#include <stdint.h>
+
 #include "fg_props.hxx"
 
 #include "FGFDM.hpp"
