@@ -23,6 +23,7 @@ static const float RAD2DEG = 57.2957795131;
 /* TODO: organize these into a better place */
 struct command {
     uint32_t magic;
+    uint32_t flags;
 
     float roll, pitch, yaw, throttle;
 
@@ -33,6 +34,7 @@ struct command {
 
 struct status {
     uint32_t magic;
+    uint32_t flags;
 
     double lat, lon, alt;
 
@@ -46,7 +48,7 @@ struct status {
     float resv[4];
 };
 
-bool readState(Airplane *a) {
+bool readState(FGFDM *fdm, Airplane *a) {
     struct command frm;
 
     ssize_t rd = read(STDIN_FILENO, &frm, sizeof(frm));
@@ -80,6 +82,18 @@ bool readState(Airplane *a) {
         Math::tmul33(s->orient, v, s->v);
 
         float wind[3] = { 0, 0, 0 };
+
+        m->setWind(wind);
+
+        m->setAir(Atmosphere::getStdPressure(alt),
+                Atmosphere::getStdTemperature(alt),
+                Atmosphere::getStdDensity(alt));
+
+        m->updateGround(s);
+
+        a->initEngines();
+
+        fdm->getExternalInput();
     }
 
     fgSetFloat("/controls/flight/aileron", frm.roll);
@@ -160,6 +174,14 @@ int usage()
 
 int main(int argc, char** argv)
 {
+    /* Initial conditions */
+    fgSetFloat("/controls/engines/engine[0]/throttle", 0.5);
+    fgSetFloat("/controls/engines/engine[0]/mixture", 1.0);
+    fgSetFloat("/controls/engines/engine[0]/magnetos", 3.0);
+    fgSetFloat("/controls/flight/elevator", -0.1);
+    fgSetFloat("/controls/flight/rudder", 0.112);
+    fgSetFloat("/controls/flight/aileron", 0);
+
     FGFDM* fdm = new FGFDM();
     Airplane* a = fdm->getAirplane();
 
@@ -201,19 +223,17 @@ int main(int argc, char** argv)
     State s;
     m->setState(&s);
 
-    /* Initial conditions */
-    fgSetFloat("/controls/engines/engine[0]/throttle", 0.5);
-    fgSetFloat("/controls/engines/engine[0]/mixture", 1.0);
-    fgSetFloat("/controls/engines/engine[0]/magnetos", 3.0);
-    fgSetFloat("/controls/flight/elevator", -0.1);
-    fgSetFloat("/controls/flight/rudder", 0.112);
-
-    fdm->getExternalInput();
-    a->initEngines();
-
     long double t = 0;
 
-    while (writeState(a) && readState(a)) {
+    while (writeState(a)) {
+        if (m->isCrashed()) {
+            break;
+        }
+
+        if (!readState(fdm, a)) {
+            break;
+        }
+
         fdm->iterate(1.0f/200.0f);
         t += 1.0/200.0L;
     }
