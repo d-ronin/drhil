@@ -97,7 +97,7 @@ bool readState(FGFDM *fdm, Airplane *a) {
     }
 
     fgSetFloat("/controls/flight/aileron", frm.roll);
-    fgSetFloat("/controls/flight/elevator", frm.pitch);
+    fgSetFloat("/controls/flight/elevator", -frm.pitch);
     fgSetFloat("/controls/flight/rudder", frm.yaw);
     fgSetFloat("/controls/engines/engine[0]/throttle", frm.throttle);
 
@@ -156,6 +156,8 @@ bool writeState(Airplane *a)
     m->setAir(Atmosphere::getStdPressure(frm.alt),
             Atmosphere::getStdTemperature(frm.alt),
             Atmosphere::getStdDensity(frm.alt));
+
+    frm.alt = -frm.alt;
 
     m->updateGround(s);
 
