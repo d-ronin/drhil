@@ -78,6 +78,8 @@ int main(int argc, char** argv)
     fgSetFloat("/controls/engines/engine[0]/throttle", 0.5);
     fgSetFloat("/controls/engines/engine[0]/mixture", 1.0);
     fgSetFloat("/controls/engines/engine[0]/magnetos", 3.0);
+    fgSetFloat("/controls/flight/elevator", -0.1);
+    fgSetFloat("/controls/flight/rudder", 0.112);
 
     /* Run the sim for 5 seconds first, to spin up engines etc */
     for (int i = 0; i < 1000; i++) {
@@ -90,11 +92,11 @@ int main(int argc, char** argv)
 
         sgGeodToCart(0, 0, alt, s->pos);
 
-        Glue::euler2orient(0, -6 * DEG2RAD, 0, s->orient);
+        Glue::euler2orient(0, 0, 0, s->orient);
         Math::mmul33(s->orient, xyz2ned, s->orient);
 
-        /* Start off going 60 m/s forward, 5 m/s up */
-        float v[3] = { 60, 0, 5 };
+        /* Start off going 50 m/s forward */
+        float v[3] = { 50, 0, 0 };
 
         Math::tmul33(s->orient, v, s->v);
 
