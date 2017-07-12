@@ -29,7 +29,7 @@ public:
                              float* roll, float* pitch, float* hdg);
 
     static void geodUp(double lat, double lon, float* up);
-    static void geodUp(double* pos, float* up);
+    static void geodUp(const double* pos, float* up);
 };
 
 }; // namespace yasim

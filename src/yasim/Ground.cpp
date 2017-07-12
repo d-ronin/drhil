@@ -23,10 +23,10 @@ void Ground::getGroundPlane(const double pos[3],
     // us, find the (geodetic) up vector normal to the ground, then
     // use that to find the final (radius) term of the plane equation.
     float up[3];
-    Glue::geodUp((double*)pos, up);
+    Glue::geodUp(pos, up);
     int i;
     for(i=0; i<3; i++) plane[i] = up[i];
-    plane[3] = plane[0]*pos[0] + plane[1]*pos[1] + plane[2]*pos[2];
+    plane[3] = -100 + plane[0]*pos[0] + plane[1]*pos[1] + plane[2]*pos[2];
 
     vel[0] = 0.0;
     vel[1] = 0.0;
@@ -38,6 +38,8 @@ void Ground::getGroundPlane(const double pos[3],
                             const simgear::BVHMaterial **material)
 {
     getGroundPlane(pos,plane,vel);
+
+    *material = 0;
 }
 
 bool Ground::caughtWire(const double pos[4][3])

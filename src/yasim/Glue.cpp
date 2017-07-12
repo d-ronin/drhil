@@ -157,7 +157,7 @@ void Glue::geodUp(double lat, double lon, float* up)
 }
 
 // FIXME: Hardcoded WGS84 numbers...
-void Glue::geodUp(double* pos, float* up)
+void Glue::geodUp(const double* pos, float* up)
 {
     const double SQUASH  = 0.9966471893352525192801545;
     const double STRETCH = 1.0033640898209764189003079;
