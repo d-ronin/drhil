@@ -38,6 +38,8 @@ void Ground::getGroundPlane(const double pos[3],
                             const simgear::BVHMaterial **material)
 {
     getGroundPlane(pos,plane,vel);
+
+    *material = 0;
 }
 
 bool Ground::caughtWire(const double pos[4][3])
