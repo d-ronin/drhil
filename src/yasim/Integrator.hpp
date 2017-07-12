@@ -23,13 +23,6 @@ public:
     // derivatives.
     void setEnvironment(BodyEnvironment* env);
 
-    // Sets the time interval between steps.  Units can be anything,
-    // but they must match the other values (if you specify speed in
-    // m/s, then angular acceleration had better be in 1/s^2 and the
-    // time interval should be in seconds, etc...)
-    void setInterval(float dt);
-    float getInterval();
-
     // The current state, i.e. initial conditions for the next
     // integration iteration.  Note that the acceleration parameters
     // in the State object are ignored.
