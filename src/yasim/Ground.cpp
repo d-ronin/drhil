@@ -26,7 +26,7 @@ void Ground::getGroundPlane(const double pos[3],
     Glue::geodUp(pos, up);
     int i;
     for(i=0; i<3; i++) plane[i] = up[i];
-    plane[3] = plane[0]*pos[0] + plane[1]*pos[1] + plane[2]*pos[2];
+    plane[3] = -100 + plane[0]*pos[0] + plane[1]*pos[1] + plane[2]*pos[2];
 
     vel[0] = 0.0;
     vel[1] = 0.0;
